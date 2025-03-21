@@ -54,11 +54,13 @@ namespace LAB3._1
                 collection.Add(n);
             }
         }
-        public int TimGiaTri(int giaTri, int current, TimKieu kieu)
-        {
-            return (kieu == TimKieu.TimMax) ? Math.Max(giaTri, current) : Math.Min(giaTri, current);
-        }
+            public int TimGiaTri(int giaTri, int current, TimKieu kieu)
+            {
+                return (kieu == TimKieu.TimMax) ? Math.Max(giaTri, current) : Math.Min(giaTri, current);
+            }
 
+
+   
 
 
         public List<string> TimDSCacThanhPho()
@@ -78,6 +80,7 @@ namespace LAB3._1
             return kq;
         }
 
+       
         public int DemSoThueBaoTheoTP(string tp)
         {
 
@@ -256,48 +259,353 @@ namespace LAB3._1
             }
         }
 
-        // Function 1: Count the number of registrations per date
-        public Dictionary<DateTime, int> DemSoLuongDangKyTheoNgay()
+
+
+
+
+
+
+
+
+        //public Dictionary<DateTime, int> DemSoLuongDangKyTheoNgay()
+        //{
+        //    //tao mot Dictionary de duyet qua mang khong trung lap cac phan tu da duyet roi
+        //    Dictionary<DateTime, int> ngayCounts = new Dictionary<DateTime, int>();
+
+        //    foreach (var tb in collection)
+        //    {
+        //        //o day ngayCount chi chua cac ngay khac nhau, va neu tim thay ngay nao trung thi se tang bien dem len
+        //        if (ngayCounts.ContainsKey(tb.NgayDangKy))
+        //            ngayCounts[tb.NgayDangKy]++;
+        //        else
+        //            //neu khong thi chi co 1 ngay 
+        //            ngayCounts[tb.NgayDangKy] = 1;
+        //    }
+
+        //    return ngayCounts;
+        //}
+
+        //public List<DateTime> TimNgayDangKyNhieuVaItNhat()
+        //{
+
+        //    Dictionary<DateTime, int> ngayCounts = DemSoLuongDangKyTheoNgay();
+
+        //    // tim max, min
+        //    int maxCount = int.MinValue;
+        //    int minCount = int.MaxValue;
+
+        //    foreach (var count in ngayCounts.Values)
+        //    {
+        //        //duyet qua mang de tim nhung gia tri bang max va min
+        //        maxCount = TimGiaTri(count, maxCount, TimKieu.TimMax);
+        //        minCount = TimGiaTri(count, minCount, TimKieu.TimMin);
+        //    }
+
+        //    // them cac ngay bang max va min vao trong ket qua
+        //    List<DateTime> result = new List<DateTime>();
+
+        //    foreach (var entry in ngayCounts)
+        //    {
+        //        if (entry.Value == maxCount || entry.Value == minCount)
+        //            result.Add(entry.Key);
+        //    }
+
+        //    return result;
+        //}
+
+        public List<DateTime> LoaiBoNgayTrung()
         {
-            Dictionary<DateTime, int> ngayCounts = new Dictionary<DateTime, int>();
+            List<DateTime> ngayKhongTrung = new List<DateTime>();
 
             foreach (var tb in collection)
             {
-                if (ngayCounts.ContainsKey(tb.NgayDangKy))
-                    ngayCounts[tb.NgayDangKy]++;
-                else
-                    ngayCounts[tb.NgayDangKy] = 1;
+                //neu trong mang khong co chua ngay dang ky thi se them vao de loai bo cac phan tu trung lap
+                if (!ngayKhongTrung.Contains(tb.NgayDangKy))
+                {
+                    ngayKhongTrung.Add(tb.NgayDangKy);
+                }
             }
 
-            return ngayCounts;
+            return ngayKhongTrung;
         }
 
-        // Function 2: Find the days with the most and least registrations
-        public List<DateTime> TimNgayDangKyNhieuVaItNhat()
+        // Hàm đếm số lượng đăng ký theo ngày
+        public List<(DateTime, int)> DemSoLuongDangKyTheoNgay()
         {
-            Dictionary<DateTime, int> ngayCounts = DemSoLuongDangKyTheoNgay();
+            List<DateTime> ngayKhongTrung = LoaiBoNgayTrung();
+            List<(DateTime, int)> ketQua = new List<(DateTime, int)>();
 
-            // Step 1: Find max and min values
-            int maxCount = int.MinValue;
-            int minCount = int.MaxValue;
-
-            foreach (var count in ngayCounts.Values)
+            foreach (var ngay in ngayKhongTrung)
             {
-                maxCount = TimGiaTri(count, maxCount, TimKieu.TimMax);
-                minCount = TimGiaTri(count, minCount, TimKieu.TimMin);
+                int count = 0;
+                foreach (var tb in collection)
+                {
+                    if (tb.NgayDangKy == ngay)
+                    {
+                        count++;
+                    }
+                }
+                ketQua.Add((ngay, count));
             }
 
-            // Step 2: Collect all dates with max and min counts
-            List<DateTime> result = new List<DateTime>();
+            return ketQua;
+        }
+
+        // Hàm tìm ngày có số lượng đăng ký nhiều nhất và ít nhất
+        public void TimNgayDangKyNhieuNhat()
+        {
+            var ngayCounts = DemSoLuongDangKyTheoNgay();
+
+            int maxCount = int.MinValue;
 
             foreach (var entry in ngayCounts)
             {
-                if (entry.Value == maxCount || entry.Value == minCount)
-                    result.Add(entry.Key);
+                maxCount = TimGiaTri(entry.Item2, maxCount, TimKieu.TimMax);
+            }
+
+            Console.WriteLine("Các ngày có số lượng đăng ký nhiều nhất:");
+            foreach (var entry in ngayCounts)
+            {
+                if (entry.Item2 == maxCount)
+                {
+                    Console.WriteLine(entry.Item1);
+                }
+            }
+        }
+        public void TimNgayDangKyItNhat()
+        {
+            var ngayCounts = DemSoLuongDangKyTheoNgay();
+
+            int minCount = int.MaxValue;
+
+            foreach (var entry in ngayCounts)
+            {
+                minCount = TimGiaTri(entry.Item2, minCount, TimKieu.TimMin);
+            }
+
+            Console.WriteLine("Các ngày có số lượng đăng ký ít nhất:");
+            foreach (var entry in ngayCounts)
+            {
+                if (entry.Item2 == minCount)
+                {
+                    Console.WriteLine(entry.Item1);
+                }
+            }
+        }
+
+        public List<string> LoaiBoTPTrung()
+        {
+            List<string> TPKoTrung = new List<string>();
+
+            foreach (var tb in collection)
+            {
+                if (!TPKoTrung.Contains(tb.DiaChi))   
+                {
+                    TPKoTrung.Add(tb.DiaChi);
+                }
+            }
+
+            return TPKoTrung;
+        }
+
+        public void XuatThongTinThueBao(string TP)
+        {
+            foreach (var tb in collection)
+            {
+                if (tb.DiaChi == TP)  
+                {
+                    tb.Xuat();
+                }
+            }
+        }
+
+        public int DemSoLuongTP(string tinh)
+        {
+            int dem = 0;
+            foreach (var item in collection)
+            {
+                if (item.DiaChi == tinh)  
+                {
+                    ++dem;
+                }
+            }
+            return dem;
+        }
+
+        public void ThongKeTheoTungThanhPho()
+        {
+            List<string> uniqueCities = LoaiBoTPTrung();
+            foreach (var city in uniqueCities)
+            {
+                Console.WriteLine($"Thành phố: {city} (Tổng số thuê bao: {DemSoLuongTP(city)})");
+                XuatThongTinThueBao(city);
+            }
+        }
+
+        public List<(string, int)> DemSoLuongThueBao(string loaiThueBao)
+        {
+            List<string> TPKhongTrung = LoaiBoTPTrung();
+            List<(string, int)> ketQua = new List<(string, int)>();
+
+            foreach (var TP in TPKhongTrung)
+            {
+                int count = 0;
+                foreach (var tb in collection)
+                {
+                    if (tb.ThanhPho == TP && tb.LoaiThueBao == loaiThueBao  )
+                    {
+                        count++;
+                    }
+                }
+                ketQua.Add((TP, count));
+            }
+
+            return ketQua;
+        }
+        public List<string> TimThanhPhoTheoDieuKien(string loaiThueBao, TimKieu kieu)
+        {
+            var thanhPhoCounts = DemSoLuongThueBao(loaiThueBao);
+
+            int extremeCount = (kieu == TimKieu.TimMax) ? int.MinValue : int.MaxValue;
+            List<string> result = new List<string>();
+
+            foreach (var entry in thanhPhoCounts)
+            {
+                int newExtreme = TimGiaTri(extremeCount, entry.Item2, kieu);
+
+                if (newExtreme != extremeCount) // If a new extreme value is found
+                {
+                    extremeCount = newExtreme;
+                    result.Clear();
+                    result.Add(entry.Item1);
+                }
+                else if (entry.Item2 == extremeCount) // If it's equal to the extreme value, add it
+                {
+                    result.Add(entry.Item1);
+                }
             }
 
             return result;
         }
+
+        // Using the refactored function
+        public List<string> TimThanhPhoNhieuNhat(string loaiThueBao)
+        {
+            return TimThanhPhoTheoDieuKien(loaiThueBao, TimKieu.TimMax);
+        }
+
+        public List<string> TimThanhPhoItNhat(string loaiThueBao)
+        {
+            return TimThanhPhoTheoDieuKien(loaiThueBao, TimKieu.TimMin);
+        }
+
+
+        public void TimThueBaoItSoDienThoaiCoDinh()
+        {
+            ThueBao thueBaoItSDT = null;
+            int minSDT = int.MaxValue;
+
+            foreach (var tb in collection)
+            {
+                if (tb.LoaiThueBao == "CoDinh" && tb.SoDT.Count < minSDT)
+                {
+                    minSDT = tb.SoDT.Count;
+                    thueBaoItSDT = tb;
+                }
+            }
+
+            if (thueBaoItSDT != null)
+            {
+                Console.WriteLine("Thuê bao sở hữu ít số điện thoại cố định nhất:");
+                thueBaoItSDT.Xuat();
+            }
+            else
+            {
+                Console.WriteLine("Không có thuê bao cố định nào.");
+            }
+        }
+
+        public void TimThueBaoDiDongTheoGioiTinh(GioiTinh gioiTinh)
+        {
+            List<ThueBao> danhSach = new List<ThueBao>();
+
+            foreach (var tb in collection)
+            {
+                if (tb.LoaiThueBao == "DiDong" && tb.GioiTinh == gioiTinh)
+                {
+                    danhSach.Add(tb);
+                }
+            }
+
+            if (danhSach.Count > 0)
+            {
+                Console.WriteLine($"danh sach thue bao theo gioi tinh {gioiTinh}:");
+                foreach (var tb in danhSach)
+                {
+                    tb.Xuat();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"danh sach rong.");
+            }
+        }
+
+        public void XoaThueBaoTheoNgayLapDat(DateTime ngayLapDat)
+        {
+            int countBefore = collection.Count;
+            collection.RemoveAll(tb => tb.NgayLapDat.Date == ngayLapDat.Date);
+
+            int countAfter = collection.Count;
+            Console.WriteLine($"Đã xóa {countBefore - countAfter} thuê bao có ngày lắp đặt {ngayLapDat.ToShortDateString()}.");
+        }
+
+        public void TimKhachHangDiDongTheoNhaCungCap(string nhaCungCap)
+        {
+            var danhSach = collection.Where(tb => tb.LoaiThueBao == "Di động" && tb.NhaDichVu == nhaCungCap).ToList();
+
+            if (danhSach.Any())
+            {
+                Console.WriteLine($"Danh sách thuê bao di động của nhà cung cấp {nhaCungCap}:");
+                foreach (var tb in danhSach)
+                {
+                    tb.Xuat();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Không tìm thấy thuê bao di động nào thuộc nhà cung cấp {nhaCungCap}.");
+            }
+        }
+
+        public void HienThiSoLuongThueBaoCoDinhTheoNhaCungCap()
+        {
+            Dictionary<string, int> soLuongTheoNhaCungCap = new Dictionary<string, int>();
+
+            // Duyệt qua danh sách thuê bao để đếm số lượng thuê bao cố định theo nhà cung cấp
+            foreach (var tb in collection)
+            {
+                if (tb.LoaiThueBao == "Cố định")
+                {
+                    if (!soLuongTheoNhaCungCap.ContainsKey(tb.NhaDichVu))
+                    {
+                        soLuongTheoNhaCungCap[tb.NhaDichVu] = 1;
+                    }
+                    else
+                    {
+                        soLuongTheoNhaCungCap[tb.NhaDichVu]++;
+                    }
+                }
+            }
+
+            // Hiển thị kết quả
+            Console.WriteLine("Số lượng thuê bao cố định theo từng nhà cung cấp dịch vụ:");
+            foreach (var kvp in soLuongTheoNhaCungCap)
+            {
+                Console.WriteLine($"Nhà cung cấp: {kvp.Key} - Số lượng: {kvp.Value}");
+            }
+        }
+
 
     }
 }

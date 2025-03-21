@@ -19,6 +19,9 @@ namespace LAB3._1
         public List<string> SoDT { get; set; }
         public string SoCMND { get; set; }
         public DateTime NgayDangKy { get; set; }
+        public string LoaiThueBao { get; set; }
+        public DateTime NgayLapDat { get; set; }
+        public string NhaDichVu { get; set; }
 
         public ThueBao() { }
 
@@ -147,6 +150,24 @@ namespace LAB3._1
             foreach (var tb in collection)
             {
                 tb.Xuat();
+            }
+        }
+        public void ThemLoaiThueBao(ThueBao tb)
+        {
+            Console.WriteLine("nhap loai thue bao cua ban (co dinh hoac di dong)");
+            tb.LoaiThueBao = Console.ReadLine();
+            
+            if(tb.LoaiThueBao.CompareTo("co dinh") == 0)
+            {
+                Console.Write("Nhap ngay lap dat (yyyy-MM-dd): ");
+                tb.NgayLapDat = DateTime.Parse(Console.ReadLine());
+
+            }
+            else
+            {
+                Console.WriteLine("nhap nha dich vu");
+                tb.NhaDichVu = Console.ReadLine();
+                
             }
         }
     }
