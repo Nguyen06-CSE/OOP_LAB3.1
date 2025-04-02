@@ -1,0 +1,7 @@
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\bin\Debug\LAB3.1.exe.config
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\bin\Debug\LAB3.1.exe
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\bin\Debug\LAB3.1.pdb
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\obj\Debug\LAB3.1.csproj.AssemblyReference.cache
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\obj\Debug\LAB3.1.csproj.CoreCompileInputs.cache
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\obj\Debug\LAB3.1.exe
+C:\Users\nguyen.cao\Desktop\codec++\oop\baiTapTrenLMS\lab1.1\LAB3.1\obj\Debug\LAB3.1.pdb

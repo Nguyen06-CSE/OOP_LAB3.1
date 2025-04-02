@@ -261,12 +261,6 @@ namespace LAB3._1
 
 
 
-
-
-
-
-
-
         //public Dictionary<DateTime, int> DemSoLuongDangKyTheoNgay()
         //{
         //    //tao mot Dictionary de duyet qua mang khong trung lap cac phan tu da duyet roi
